@@ -1,2 +1,0 @@
-# AtivExtensionista
-Atividade Extensionista
