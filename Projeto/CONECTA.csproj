@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.104.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Newtonsoft.JsonResult" Version="1.0.5778.10762" />
     <PackageReference Include="Stub.System.Data.SQLite.Core.NetFramework" Version="1.0.119" />

@@ -64,7 +64,8 @@ namespace CONECTA.Classes
                                                                                       caus_endereco VARCHAR(255),
                                                                                       caus_perfil VARCHAR(255),
                                                                                       caus_senha VARCHAR(255),
-                                                                                      caus_data_registro VARCHAR(255)
+                                                                                      caus_data_registro VARCHAR(255),
+                                                                                      caus_telefone      VARCHAR(255)
                                                                                     )";
                     cmd.ExecuteNonQuery();
                 }
@@ -93,29 +94,8 @@ namespace CONECTA.Classes
                     cmd.CommandText = @"CREATE TABLE IF NOT EXISTS projeto_colaboradores ( prco_pk INTEGER PRIMARY KEY AUTOINCREMENT,
                                                                                            prco_capr_fk INTEGER,
                                                                                            prco_caus_fk INTEGER,
-                                                                                           prco_status
+                                                                                           prco_status VARCHAR(255)
                                                                                           )";
-                    cmd.ExecuteNonQuery();
-                }
-
-                using (var cmd = DBconnection().CreateCommand())
-                {
-                    cmd.CommandText = @"CREATE TABLE IF NOT EXISTS projeto_atualizacoes ( prat_pk INTEGER PRIMARY KEY AUTOINCREMENT,
-                                                                                           prat_capr_fk INTEGER,
-                                                                                           prat_caus_fk INTEGER,
-                                                                                           prat_atualizacao CLOB
-                        )";
-                    cmd.ExecuteNonQuery();
-                }
-
-                using (var cmd = DBconnection().CreateCommand())
-                {
-                    cmd.CommandText = @"CREATE TABLE IF NOT EXISTS cadastro_documento ( cado_pk INTEGER PRIMARY KEY AUTOINCREMENT,
-                                                                                        cado_capr_fk INTEGER,
-                                                                                        cado_caus_fk INTEGER,
-                                                                                        cado_nome_documento VARCHAR(255),
-                                                                                        cado_caminho_documento VARCHAR(255)
-                        )";
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -179,7 +159,7 @@ namespace CONECTA.Classes
             return null;
         }
 
-        public static void NovoUsuario(string nome, string cpf, string cep, string estado, string bairro, string numero, string endereco, string perfil, string senha)
+        public static void NovoUsuario(string nome, string cpf, string cep, string estado, string bairro, string numero, string endereco, string perfil, string senha, string telefone)
         {
 
            cpf = new string(cpf.Normalize(NormalizationForm.FormD)
@@ -203,8 +183,8 @@ namespace CONECTA.Classes
 
                     using (var connection = DBconnection())
                     {
-                        using (var cmd = new SQLiteCommand(@"INSERT INTO cadastro_usuario (caus_nome, caus_cpf, caus_cep, caus_estado, caus_bairro, caus_numero, caus_endereco, caus_perfil,caus_senha, caus_data_registro) 
-                                                                    VALUES  (@nome, @cpf, @cep, @estado, @bairro, @numero, @endereco, @perfil, @senha, @dataRegistro)", connection))
+                        using (var cmd = new SQLiteCommand(@"INSERT INTO cadastro_usuario (caus_nome, caus_cpf, caus_cep, caus_estado, caus_bairro, caus_numero, caus_endereco, caus_perfil,caus_senha, caus_data_registro, caus_telefone) 
+                                                                    VALUES  (@nome, @cpf, @cep, @estado, @bairro, @numero, @endereco, @perfil, @senha, @dataRegistro, @telefone)", connection))
                         {
                             cmd.Parameters.AddWithValue("@nome", nome);
                             cmd.Parameters.AddWithValue("@cpf", cpf);
@@ -216,7 +196,7 @@ namespace CONECTA.Classes
                             cmd.Parameters.AddWithValue("@perfil", perfil);
                             cmd.Parameters.AddWithValue("@senha", CriptografarSenha(senha));
                             cmd.Parameters.AddWithValue("@dataRegistro", dataRegistro);
-
+                            cmd.Parameters.AddWithValue("@telefone", telefone);
                             if (connection.State != ConnectionState.Open)
                             {
                                 connection.Open();

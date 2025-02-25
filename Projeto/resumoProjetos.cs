@@ -1,7 +1,9 @@
-﻿using System;
+﻿using ClosedXML.Excel;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -13,6 +15,7 @@ namespace CONECTA.Classes
     public partial class resumoProjetos : Form
     {
         int identificacaoUsuario = 0;
+        bool usuarioModerador = false;
         public resumoProjetos(int userID)
         {
             identificacaoUsuario = userID;
@@ -20,7 +23,9 @@ namespace CONECTA.Classes
             carregarEstatistica();
             carregarCboBairro();
             carregarCboEstado();
-
+            usuarioModerador = clsConnect.GetValor($"select CAUS_PK from cadastro_usuario where caus_pk = {identificacaoUsuario} and caus_perfil = 'MODERADOR'", "CAUS_PK") == identificacaoUsuario.ToString() ? true : false;
+            BtnExtrair.Visible = usuarioModerador;
+            BtnExtrair.Enabled = usuarioModerador;
 
         }
 
@@ -164,5 +169,60 @@ namespace CONECTA.Classes
             carregarEstatistica();
         }
 
+        private void BtnExtrair_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DataTable m_Data = new DataTable();
+                m_Data = clsConnect.GetDados("      select a.capr_titulo        [projeto]                      " +
+                                             "            ,d.caus_nome         [Autor]                        " +
+                                             "            ,a.capr_descricao     [Descrição]                    " +
+                                             "            ,a.capr_data_inicio   [Data de Início]               " +
+                                             "            ,a.capr_data_fim      [Data Final]                   " +
+                                             "            ,a.capr_endereco      [Endereço do projeto]          " +
+                                             "            ,a.capr_numero        [Numero]                       " +
+                                             "            ,a.capr_bairro        [Bairro]                       " +
+                                             "            ,a.capr_estado        [Estado]                       " +
+                                             "            ,c.caus_nome          [Voluntário]                   " +
+                                             "            ,c.caus_telefone      [Voluntário - Telefone]        " +
+                                             "            ,c.caus_estado        [Voluntário - Estado]          " +
+                                             "            ,c.caus_bairro        [Voluntário - Bairro]          " +
+                                             "            ,c.caus_numero        [Voluntário - Numero]          " +
+                                             "            ,c.caus_endereco      [Voluntário - Complemento]     " +
+                                             "        from cadastro_projeto a                                  " +
+                                             "   left join projeto_colaboradores b                             " +
+                                             "          on b.prco_capr_fk = a.capr_pk                          " +
+                                             "   left join cadastro_usuario c                                  " +
+                                             "          on c.caus_pk = b.prco_caus_fk                          " +
+                                             "   left join cadastro_usuario d                                  " +
+                                             "          on d.caus_pk = a.capr_autor                            "
+                                            );
+
+                if (m_Data.Rows.Count > 0)
+                {
+                    string caminhoArquivo = @"C:\temp\RelatorioVoluntarios.xlsx";
+
+                    using (var workbook = new XLWorkbook())
+                    {
+                        var worksheet = workbook.Worksheets.Add("Relatório de Voluntários");
+                        worksheet.Cell(1, 1).InsertTable(m_Data);
+
+                        worksheet.Columns().AdjustToContents();
+
+                        workbook.SaveAs(caminhoArquivo);
+                    }
+
+                    Process.Start(new ProcessStartInfo(caminhoArquivo) { UseShellExecute = true });
+                }
+                else
+                {
+                    MessageBox.Show("Nenhum dado encontrado para exportar.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
     }
 }

@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             PanelPrincipal_ResumoProjetos = new Panel();
+            BtnExtrair = new Button();
             label1 = new Label();
             CboTipoProjeto = new ComboBox();
             LbQtdProjetos = new Label();
@@ -44,6 +45,7 @@
             // 
             // PanelPrincipal_ResumoProjetos
             // 
+            PanelPrincipal_ResumoProjetos.Controls.Add(BtnExtrair);
             PanelPrincipal_ResumoProjetos.Controls.Add(label1);
             PanelPrincipal_ResumoProjetos.Controls.Add(CboTipoProjeto);
             PanelPrincipal_ResumoProjetos.Controls.Add(LbQtdProjetos);
@@ -58,6 +60,18 @@
             PanelPrincipal_ResumoProjetos.Name = "PanelPrincipal_ResumoProjetos";
             PanelPrincipal_ResumoProjetos.Size = new Size(1124, 465);
             PanelPrincipal_ResumoProjetos.TabIndex = 0;
+            // 
+            // BtnExtrair
+            // 
+            BtnExtrair.Enabled = false;
+            BtnExtrair.Location = new Point(623, 68);
+            BtnExtrair.Name = "BtnExtrair";
+            BtnExtrair.Size = new Size(107, 23);
+            BtnExtrair.TabIndex = 22;
+            BtnExtrair.Text = "Extrair Dados";
+            BtnExtrair.UseVisualStyleBackColor = true;
+            BtnExtrair.Visible = false;
+            BtnExtrair.Click += BtnExtrair_Click;
             // 
             // label1
             // 
@@ -167,5 +181,6 @@
         private ComboBox CboEstado;
         private Label label1;
         private ComboBox CboTipoProjeto;
+        private Button BtnExtrair;
     }
 }

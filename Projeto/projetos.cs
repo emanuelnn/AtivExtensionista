@@ -2,7 +2,10 @@ using CONECTA.Classes;
 using System.Data;
 using System.Runtime.InteropServices;
 using System.Globalization;
-
+using ClosedXML.Excel;
+using System;
+using System.Diagnostics;
+using System.IO;
 
 namespace CONECTA
 {
@@ -41,7 +44,7 @@ namespace CONECTA
             DataFinalProjeto.CustomFormat = "dd/MM/yyyy";
             DataInicioProjeto.CustomFormat = "dd/MM/yyyy";
 
-            verifModerador    = clsConnect.GetValor($"Select caus_perfil from cadastro_usuario where caus_perfil   = {identificacaoUsuario}", "caus_perfil")                                                                  != "" ? true : false;
+            verifModerador = clsConnect.GetValor($"Select caus_perfil from cadastro_usuario where caus_perfil   = {identificacaoUsuario}", "caus_perfil") != "" ? true : false;
         }
 
         private void projetos_Load(object sender, EventArgs e)
@@ -164,26 +167,26 @@ namespace CONECTA
 
             m_Data = clsConnect.GetDados($"select * from cadastro_projeto where capr_pk = {chaveProjeto}");
 
-            CboTipo.Text            = m_Data.Rows[0]["capr_tipo_projeto"]?.ToString();
-            TextTitulo.Text         = m_Data.Rows[0]["capr_titulo"]?.ToString();
-            TextDescricao.Text      = m_Data.Rows[0]["capr_descricao"]?.ToString();
-            DataInicioProjeto.Text  = m_Data.Rows[0]["capr_data_inicio"]?.ToString();
-            DataFinalProjeto.Text   = m_Data.Rows[0]["capr_data_fim"]?.ToString();
-            TextComplemento.Text    = m_Data.Rows[0]["capr_endereco"]?.ToString();
-            TextNumero.Text         = m_Data.Rows[0]["capr_numero"]?.ToString();
-            TextBairro.Text         = m_Data.Rows[0]["capr_bairro"]?.ToString();
+            CboTipo.Text = m_Data.Rows[0]["capr_tipo_projeto"]?.ToString();
+            TextTitulo.Text = m_Data.Rows[0]["capr_titulo"]?.ToString();
+            TextDescricao.Text = m_Data.Rows[0]["capr_descricao"]?.ToString();
+            DataInicioProjeto.Text = m_Data.Rows[0]["capr_data_inicio"]?.ToString();
+            DataFinalProjeto.Text = m_Data.Rows[0]["capr_data_fim"]?.ToString();
+            TextComplemento.Text = m_Data.Rows[0]["capr_endereco"]?.ToString();
+            TextNumero.Text = m_Data.Rows[0]["capr_numero"]?.ToString();
+            TextBairro.Text = m_Data.Rows[0]["capr_bairro"]?.ToString();
 
             ComboEstados.DropDownStyle = ComboBoxStyle.Simple;
-            ComboEstados.Text          = m_Data.Rows[0]["capr_estado"]?.ToString();
+            ComboEstados.Text = m_Data.Rows[0]["capr_estado"]?.ToString();
 
             DateTime.TryParseExact(DataFinalProjeto.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dataFinal);
             dataFinal = DataFinalProjeto.Value;
             statusProjetoAberto = (dataFinal >= DateTime.Today);
             string autor = clsConnect.GetValor($"Select capr_autor from cadastro_projeto where capr_pk = {registroAtual}", "capr_autor");
-            verifAutorProjeto   = autor == identificacaoUsuario.ToString() ? true : false;
+            verifAutorProjeto = autor == identificacaoUsuario.ToString() ? true : false;
             LbAutorProjeto.Text = clsConnect.GetValor($"select caus_nome from cadastro_usuario a left join cadastro_projeto b on b.capr_caus_fk = a.caus_pk", "caus_nome");
-            verifColaborador    = clsConnect.GetValor($"Select prco_pk from projeto_colaboradores where prco_caus_fk = {identificacaoUsuario} and prco_capr_fk = {registroAtual} and prco_status = 'COLABORADOR'", "prco_pk") != "" ? true : false;
-            verifParticipante   = clsConnect.GetValor($"Select prco_pk from projeto_colaboradores where prco_caus_fk = {identificacaoUsuario} and prco_capr_fk = {registroAtual} and prco_status = 'PARTICIPANTE'", "prco_pk") != "" ? true : false;
+            verifColaborador = clsConnect.GetValor($"Select prco_pk from projeto_colaboradores where prco_caus_fk = {identificacaoUsuario} and prco_capr_fk = {registroAtual} and prco_status = 'COLABORADOR'", "prco_pk") != "" ? true : false;
+            verifParticipante = clsConnect.GetValor($"Select prco_pk from projeto_colaboradores where prco_caus_fk = {identificacaoUsuario} and prco_capr_fk = {registroAtual} and prco_status = 'PARTICIPANTE'", "prco_pk") != "" ? true : false;
 
             carregarGridColab();
             carregarParticipantes();
@@ -271,7 +274,7 @@ namespace CONECTA
                                                                                                                           $"and b.prco_capr_fk = {registroAtual} " +
                                                                                                                          "where b.prco_status  = 'PARTICIPANTE' " +
                                                                                                                          "order by a.caus_nome ");
-            GridParticipantes.DataSource         = m_Data;
+            GridParticipantes.DataSource = m_Data;
             GridParticipantes.Columns[0].Visible = false;
             GridParticipantes.Columns[1].Visible = false;
         }
@@ -362,6 +365,7 @@ namespace CONECTA
             BtnAddArquivo.Enabled = ((verifColaborador || verifAutorProjeto) && statusProjetoAberto);
             BtnSalvar.Enabled = (verifAutorProjeto && statusProjetoAberto); //Apenas o autor do projeto pode Salvar mudanças
             BtnExcluirProjeto.Enabled = (verifAutorProjeto && statusProjetoAberto); //Apenas o autor do projeto ou um moderador do sistema pode realziar exclusões
+            BtnExtrairDados.Enabled = ((verifColaborador || verifAutorProjeto) && statusProjetoAberto);
 
             statusCampos(verifAutorProjeto && statusProjetoAberto);
         }
@@ -480,7 +484,7 @@ namespace CONECTA
             {
                 try
                 {
-                    if(string.IsNullOrEmpty(ComboEstados.Text) || string.IsNullOrEmpty(TextBairro.Text) || string.IsNullOrEmpty(TextNumero.Text) || string.IsNullOrEmpty(TextComplemento.Text))
+                    if (string.IsNullOrEmpty(ComboEstados.Text) || string.IsNullOrEmpty(TextBairro.Text) || string.IsNullOrEmpty(TextNumero.Text) || string.IsNullOrEmpty(TextComplemento.Text))
                     {
                         MessageBox.Show("É necessário preencher todas as informações do endereço!", "Atenção!");
                     }
@@ -562,7 +566,7 @@ namespace CONECTA
             int m_Col = GridParticipantes.CurrentCell.ColumnIndex;
             int m_Row = GridParticipantes.CurrentCell.RowIndex;
             string participante = GridParticipantes.Rows[m_Row].Cells[1].Value.ToString();
-            string chave        = GridParticipantes.Rows[m_Row].Cells[0].Value.ToString();
+            string chave = GridParticipantes.Rows[m_Row].Cells[0].Value.ToString();
 
             if (!verifAutorProjeto)
             {
@@ -570,11 +574,11 @@ namespace CONECTA
                 return;
             }
 
-            
+
             if (e.KeyCode == Keys.Delete)
             {
                 if (statusProjetoAberto && (verifAutorProjeto && participante != identificacaoUsuario.ToString())) clsConnect.executarSql($"delete from projeto_colaboradores where prco_pk = '{chave}'");
-                
+
                 carregarParticipantes();
             }
         }
@@ -584,7 +588,7 @@ namespace CONECTA
             int m_Col = GridColaboradores.CurrentCell.ColumnIndex;
             int m_Row = GridColaboradores.CurrentCell.RowIndex;
             string colaborador = GridColaboradores.Rows[m_Row].Cells[1].Value.ToString();
-            string chave       = GridColaboradores.Rows[m_Row].Cells[0].Value.ToString();
+            string chave = GridColaboradores.Rows[m_Row].Cells[0].Value.ToString();
 
             if (e.KeyCode == Keys.Delete)
             {
@@ -625,5 +629,61 @@ namespace CONECTA
 
         #endregion
 
+        #region Exportar dados
+        private void BtnExtrairDados_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DataTable m_Data = new DataTable();
+                m_Data = clsConnect.GetDados("      select a.capr_titulo        [projeto]                      " +
+                                             "            ,a.capr_descricao     [Descrição]                    " +
+                                             "            ,a.capr_data_inicio   [Data de Início]               " +
+                                             "            ,a.capr_data_fim      [Data Final]                   " +
+                                             "            ,a.capr_endereco      [Endereço do projeto]          " +
+                                             "            ,a.capr_numero        [Numero]                       " +
+                                             "            ,a.capr_bairro        [Bairro]                       " +
+                                             "            ,a.capr_estado        [Estado]                       " +
+                                             "            ,c.caus_nome          [Voluntário]                   " +
+                                             "            ,c.caus_telefone      [Voluntário - Telefone]        " +
+                                             "            ,c.caus_estado        [Voluntário - Estado]          " +
+                                             "            ,c.caus_bairro        [Voluntário - Bairro]          " +
+                                             "            ,c.caus_numero        [Voluntário - Numero]          " +
+                                             "            ,c.caus_endereco      [Voluntário - Complemento]     " +
+                                             "        from cadastro_projeto a                                  " +
+                                             "   left join projeto_colaboradores b                             " +
+                                             "          on b.prco_capr_fk = a.capr_pk" +
+                                             "         and b.prco_status in ('COLABORADOR','PARTICIPANTE')     " +
+                                             "   left join cadastro_usuario c                                  " +
+                                             "          on c.caus_pk = b.prco_caus_fk                          " +
+                                             $"where a.capr_pk = {registroAtual}"
+                                            );
+
+                if (m_Data.Rows.Count > 0)
+                {
+                    string caminhoArquivo = @"C:\temp\RelatorioVoluntarios.xlsx";
+
+                    using (var workbook = new XLWorkbook())
+                    {
+                        var worksheet = workbook.Worksheets.Add("Relatório de Voluntários");
+                        worksheet.Cell(1, 1).InsertTable(m_Data);
+
+                        worksheet.Columns().AdjustToContents();
+
+                        workbook.SaveAs(caminhoArquivo);
+                    }
+
+                    Process.Start(new ProcessStartInfo(caminhoArquivo) { UseShellExecute = true });
+                }
+                else
+                {
+                    MessageBox.Show("Nenhum dado encontrado para exportar.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        #endregion
     }
 }

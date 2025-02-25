@@ -71,6 +71,8 @@
             toolStripSeparator4 = new ToolStripSeparator();
             BtnSalvar = new ToolStripButton();
             toolStripSeparator2 = new ToolStripSeparator();
+            BtnExtrairDados = new ToolStripButton();
+            toolStripSeparator6 = new ToolStripSeparator();
             BtnParticipar = new ToolStripButton();
             toolStripSeparator3 = new ToolStripSeparator();
             BtnSair = new ToolStripButton();
@@ -448,7 +450,7 @@
             // MenuProjetos
             // 
             MenuProjetos.Dock = DockStyle.Fill;
-            MenuProjetos.Items.AddRange(new ToolStripItem[] { BtnSelecionarProjeto, toolStripSeparator1, BtnNovoProjeto, toolStripSeparator4, BtnSalvar, toolStripSeparator2, BtnParticipar, toolStripSeparator3, BtnSair, toolStripSeparator5, BtnExcluirProjeto });
+            MenuProjetos.Items.AddRange(new ToolStripItem[] { BtnSelecionarProjeto, toolStripSeparator1, BtnNovoProjeto, toolStripSeparator4, BtnSalvar, toolStripSeparator2, BtnExtrairDados, toolStripSeparator6, BtnParticipar, toolStripSeparator3, BtnSair, toolStripSeparator5, BtnExcluirProjeto });
             MenuProjetos.Location = new Point(0, 0);
             MenuProjetos.Name = "MenuProjetos";
             MenuProjetos.Size = new Size(1124, 30);
@@ -497,6 +499,21 @@
             // 
             toolStripSeparator2.Name = "toolStripSeparator2";
             toolStripSeparator2.Size = new Size(6, 30);
+            // 
+            // BtnExtrairDados
+            // 
+            BtnExtrairDados.Enabled = false;
+            BtnExtrairDados.Image = (Image)resources.GetObject("BtnExtrairDados.Image");
+            BtnExtrairDados.ImageTransparentColor = Color.Magenta;
+            BtnExtrairDados.Name = "BtnExtrairDados";
+            BtnExtrairDados.Size = new Size(96, 27);
+            BtnExtrairDados.Text = "Extrair Dados";
+            BtnExtrairDados.Click += BtnExtrairDados_Click;
+            // 
+            // toolStripSeparator6
+            // 
+            toolStripSeparator6.Name = "toolStripSeparator6";
+            toolStripSeparator6.Size = new Size(6, 30);
             // 
             // BtnParticipar
             // 
@@ -607,5 +624,7 @@
         private ComboBox ComboEstados;
         private Label LbAutorProjeto;
         private Label LbAutor;
+        private ToolStripButton BtnExtrairDados;
+        private ToolStripSeparator toolStripSeparator6;
     }
 }

@@ -191,8 +191,9 @@ namespace CONECTA
                 }
                 else
                 {
-                    clsConnect.NovoUsuario(TextNome.Text, cpf, TextCep.Text, TextEstado.Text, TextBairro.Text, TextNumero.Text, TextEndereco.Text, "PERFIL", TextSenha.Text);
+                    clsConnect.NovoUsuario(TextNome.Text, cpf, TextCep.Text, TextEstado.Text, TextBairro.Text, TextNumero.Text, TextEndereco.Text, "PERFIL", TextSenha.Text, TextTelefone.Text);
                     MessageBox.Show($"Cadastrado com Sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    LbCadastrese.Visible = true;
                     PanelCadastro.Visible = false;
                 }
             }

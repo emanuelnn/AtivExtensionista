@@ -49,6 +49,8 @@
             label3 = new Label();
             TextNumero = new TextBox();
             TextBairro = new TextBox();
+            label6 = new Label();
+            TextTelefone = new TextBox();
             PanelCadastro.SuspendLayout();
             SuspendLayout();
             // 
@@ -110,6 +112,8 @@
             // PanelCadastro
             // 
             PanelCadastro.BackColor = Color.Transparent;
+            PanelCadastro.Controls.Add(label6);
+            PanelCadastro.Controls.Add(TextTelefone);
             PanelCadastro.Controls.Add(label7);
             PanelCadastro.Controls.Add(TextEndereco);
             PanelCadastro.Controls.Add(LbCadNome);
@@ -123,9 +127,9 @@
             PanelCadastro.Controls.Add(label3);
             PanelCadastro.Controls.Add(TextNumero);
             PanelCadastro.Controls.Add(TextBairro);
-            PanelCadastro.Location = new Point(452, 83);
+            PanelCadastro.Location = new Point(419, 83);
             PanelCadastro.Name = "PanelCadastro";
-            PanelCadastro.Size = new Size(273, 225);
+            PanelCadastro.Size = new Size(317, 255);
             PanelCadastro.TabIndex = 21;
             PanelCadastro.Visible = false;
             // 
@@ -133,7 +137,7 @@
             // 
             label7.AutoSize = true;
             label7.BackColor = Color.Transparent;
-            label7.Location = new Point(2, 152);
+            label7.Location = new Point(30, 155);
             label7.Name = "label7";
             label7.Size = new Size(59, 15);
             label7.TabIndex = 32;
@@ -141,7 +145,7 @@
             // 
             // TextEndereco
             // 
-            TextEndereco.Location = new Point(63, 148);
+            TextEndereco.Location = new Point(96, 152);
             TextEndereco.Name = "TextEndereco";
             TextEndereco.Size = new Size(197, 23);
             TextEndereco.TabIndex = 7;
@@ -150,7 +154,7 @@
             // 
             LbCadNome.AutoSize = true;
             LbCadNome.BackColor = Color.Transparent;
-            LbCadNome.Location = new Point(18, 7);
+            LbCadNome.Location = new Point(46, 10);
             LbCadNome.Name = "LbCadNome";
             LbCadNome.Size = new Size(43, 15);
             LbCadNome.TabIndex = 30;
@@ -158,7 +162,7 @@
             // 
             // TextNome
             // 
-            TextNome.Location = new Point(63, 3);
+            TextNome.Location = new Point(96, 7);
             TextNome.Name = "TextNome";
             TextNome.Size = new Size(197, 23);
             TextNome.TabIndex = 2;
@@ -168,7 +172,7 @@
             // 
             label5.AutoSize = true;
             label5.BackColor = Color.Transparent;
-            label5.Location = new Point(30, 36);
+            label5.Location = new Point(58, 39);
             label5.Name = "label5";
             label5.Size = new Size(31, 15);
             label5.TabIndex = 28;
@@ -176,7 +180,7 @@
             // 
             // TextCep
             // 
-            TextCep.Location = new Point(63, 32);
+            TextCep.Location = new Point(96, 36);
             TextCep.Name = "TextCep";
             TextCep.Size = new Size(197, 23);
             TextCep.TabIndex = 3;
@@ -185,7 +189,7 @@
             // 
             label4.AutoSize = true;
             label4.BackColor = Color.Transparent;
-            label4.Location = new Point(16, 65);
+            label4.Location = new Point(44, 68);
             label4.Name = "label4";
             label4.Size = new Size(45, 15);
             label4.TabIndex = 26;
@@ -193,14 +197,14 @@
             // 
             // TextEstado
             // 
-            TextEstado.Location = new Point(63, 61);
+            TextEstado.Location = new Point(96, 65);
             TextEstado.Name = "TextEstado";
             TextEstado.Size = new Size(197, 23);
             TextEstado.TabIndex = 4;
             // 
             // BtnCadastrar
             // 
-            BtnCadastrar.Location = new Point(102, 192);
+            BtnCadastrar.Location = new Point(100, 214);
             BtnCadastrar.Name = "BtnCadastrar";
             BtnCadastrar.Size = new Size(118, 23);
             BtnCadastrar.TabIndex = 8;
@@ -212,7 +216,7 @@
             // 
             label2.AutoSize = true;
             label2.BackColor = Color.Transparent;
-            label2.Location = new Point(7, 123);
+            label2.Location = new Point(35, 126);
             label2.Name = "label2";
             label2.Size = new Size(54, 15);
             label2.TabIndex = 23;
@@ -222,7 +226,7 @@
             // 
             label3.AutoSize = true;
             label3.BackColor = Color.Transparent;
-            label3.Location = new Point(20, 94);
+            label3.Location = new Point(48, 97);
             label3.Name = "label3";
             label3.Size = new Size(41, 15);
             label3.TabIndex = 22;
@@ -230,17 +234,34 @@
             // 
             // TextNumero
             // 
-            TextNumero.Location = new Point(63, 119);
+            TextNumero.Location = new Point(96, 123);
             TextNumero.Name = "TextNumero";
             TextNumero.Size = new Size(197, 23);
             TextNumero.TabIndex = 6;
             // 
             // TextBairro
             // 
-            TextBairro.Location = new Point(63, 90);
+            TextBairro.Location = new Point(96, 94);
             TextBairro.Name = "TextBairro";
             TextBairro.Size = new Size(197, 23);
             TextBairro.TabIndex = 5;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.BackColor = Color.Transparent;
+            label6.Location = new Point(2, 181);
+            label6.Name = "label6";
+            label6.Size = new Size(88, 15);
+            label6.TabIndex = 34;
+            label6.Text = "Telefone/Email:";
+            // 
+            // TextTelefone
+            // 
+            TextTelefone.Location = new Point(96, 178);
+            TextTelefone.Name = "TextTelefone";
+            TextTelefone.Size = new Size(197, 23);
+            TextTelefone.TabIndex = 33;
             // 
             // login
             // 
@@ -288,5 +309,7 @@
         private Label label3;
         private TextBox TextNumero;
         private TextBox TextBairro;
+        private Label label6;
+        private TextBox TextTelefone;
     }
 }

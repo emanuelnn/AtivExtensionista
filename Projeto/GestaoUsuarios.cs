@@ -86,6 +86,7 @@ namespace CONECTA
             clsConnect.GenAtualizarDados("CADASTRO_USUARIO", "caus_numero", TextNumero.Text, "caus_pk", identificacaoUsuario.ToString());
             clsConnect.GenAtualizarDados("CADASTRO_USUARIO", "caus_endereco", TextEndereco.Text, "caus_pk", identificacaoUsuario.ToString());
             clsConnect.GenAtualizarDados("CADASTRO_USUARIO", "caus_senha", clsConnect.CriptografarSenha(TextSenha.Text), "caus_pk", identificacaoUsuario.ToString());
+            clsConnect.GenAtualizarDados("CADASTRO_USUARIO", "caus_telefone", TextTelefone.Text, "caus_pk", identificacaoUsuario.ToString());
 
             dadosDoUsuario();
             carregarGrid();
