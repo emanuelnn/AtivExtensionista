@@ -44,8 +44,6 @@ namespace CONECTA.Classes
             {
                 throw ex;
             }
-
-            executarSql("update cadastro_usuario set caus_perfil = 'MODERADOR'");
         }
 
         public static void CriarTabelasSQLite()

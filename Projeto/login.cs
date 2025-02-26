@@ -182,6 +182,24 @@ namespace CONECTA
                 return;
             }
 
+            if(TextSenha.Text.Length < 10)
+            {
+                MessageBox.Show("Sua senha deve conter ao menos 10 caracteres!");
+                return;
+            }
+
+            if (TextNome.Text.Length < 5)
+            {
+                MessageBox.Show("É obrigatório informar um nome!");
+                return;
+            }
+
+            if (TextNome.Text.Length < 5)
+            {
+                MessageBox.Show("É obrigatório informar um nome!");
+                return;
+            }
+
             try
             {
                 if (cpf.Length != 11)
