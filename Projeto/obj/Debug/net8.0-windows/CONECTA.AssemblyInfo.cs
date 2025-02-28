@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CONECTA")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+07e915d24cce1d5feb95048c559b9ce7333c6a11")]
 [assembly: System.Reflection.AssemblyProductAttribute("CONECTA")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CONECTA")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
